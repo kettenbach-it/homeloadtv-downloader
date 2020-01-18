@@ -51,7 +51,7 @@ def setstate(state, id = 0, listid = 0, filesize = 0, speed = 0.0, error = "", f
             'error': error,
             'filesize': filesize,
             'speed': speed,
-            'file': filename
+            'file': base64.b64encode(filename)
         }
     return requests.get(APIuriPrefix, params=parameter, headers=headers)
 
@@ -123,11 +123,11 @@ else:
                     else:
                         print("\tFile was downloaded but state could not be set!")
 
-                except urllib.error.HTTPError as e:
+                except requests.exceptions.HTTPError as e:
                     print("\tError downloading link " + str(id) + ": " + str(e), end=". ")
                     res = setstate("damaged", id = id)
                     if res.status_code == 200:
-                        print("Set download link to damaged!!")
+                        print("Download link was set to damaged!!")
                     else:
                         print("Error updating status of download link. Something seems to be terribly wrong.")
         i = i + 1
