@@ -3,7 +3,6 @@
 # Checked out on nas:
 # https://github.com/renne/HLTVDLM
 
-import urllib
 from urllib.parse import urlparse
 import requests
 import re
