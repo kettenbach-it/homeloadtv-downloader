@@ -1,22 +1,29 @@
-# Copied to Evernote:
 # https://github.com/magicmonty/hltvdownloader
-# Checked out on nas:
 # https://github.com/renne/HLTVDLM
 
 from urllib.parse import urlparse
 import requests
 import re
-import base64
 import time
 import os
+import configparser
+from pathlib import Path
 
-outputpath = "/tmp/"
-username = "volker@kettenbach.biz"
-password = "4j9EJSAG"
+config = configparser.ConfigParser()
+try:
+    config.read("hltvdlm.conf")
+except:
+    try:
+        config.read(str(Path.home()) + ".hltvdlm.conf")
+    except Exception as e:
+        print("No config file found.")
+
+outputpath = config['DEFAULT']['outputpath']
+username = config['DEFAULT']['username']
+password = config['DEFAULT']['password']
 
 APIuriPrefix = 'https://www.homeloadtv.com/api/'
 limit = 100
-
 headers = {
     'User-Agent': 'HLTVDLM 1.0 https://github.com/renneb/HLTVDLM'
 }
