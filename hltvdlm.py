@@ -33,7 +33,7 @@ def setstate(state, id = 0, listid = 0, filesize = 0, speed = 0.0, error = "", f
             'uid': username,
             'password': password
         }
-    if state == "damaged":
+    elif state == "damaged":
         parameter = {
             'do': 'setstate',
             'state': state,
@@ -41,7 +41,7 @@ def setstate(state, id = 0, listid = 0, filesize = 0, speed = 0.0, error = "", f
             'uid': username,
             'password': password
         }
-    if state == "finished":
+    elif state == "finished":
         parameter = {
             'do': 'setstate',
             'state': state,
@@ -53,6 +53,8 @@ def setstate(state, id = 0, listid = 0, filesize = 0, speed = 0.0, error = "", f
             'speed': speed,
             'file': base64.b64encode(filename)
         }
+    else:
+        return None
     return requests.get(APIuriPrefix, params=parameter, headers=headers)
 
 
