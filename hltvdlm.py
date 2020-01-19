@@ -10,13 +10,14 @@ import configparser
 from pathlib import Path
 
 config = configparser.ConfigParser()
-try:
+
+if os.path.exists("hltvdlm.conf"):
     config.read("hltvdlm.conf")
-except:
-    try:
-        config.read(str(Path.home()) + ".hltvdlm.conf")
-    except Exception as e:
-        print("No config file found.")
+
+elif os.path.exists(str(Path.home()) + "/.hltvdlm.conf"):
+    config.read(str(Path.home()) + "/.hltvdlm.conf")
+else:
+    print("No config file found.")
 
 outputpath = config['DEFAULT']['outputpath']
 username = config['DEFAULT']['username']
