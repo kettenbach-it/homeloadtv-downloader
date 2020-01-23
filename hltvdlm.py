@@ -124,7 +124,6 @@ else:
                     timeused = round(end - start, 1)
                     filesize = os.stat(outputpath + filename).st_size
                     speed = round(filesize / (timeused), 1)
-                    print(speed)
                     res = setstate("finished", id=linkid, filesize=round(filesize / 1024),
                                    speed=round((speed*8)/1024,0), filename=filename)
                     if res.status_code == 200:
