@@ -2,7 +2,7 @@
 """
 Downloader for Homeload-TV (https://www.homeloadtv.com/)
 
-Based on ides from:
+Based on ideas of:
     https://github.com/magicmonty/hltvdownloader
     https://github.com/renne/HLTVDLM
 
