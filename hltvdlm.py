@@ -1,13 +1,21 @@
-# https://github.com/magicmonty/hltvdownloader
-# https://github.com/renne/HLTVDLM
+# pylint: disable=line-too-long,redefined-builtin,redefined-outer-name,invalid-name
+"""
+Downloader for Homeload-TV (https://www.homeloadtv.com/)
 
-from urllib.parse import urlparse
-import requests
+Based on ides from:
+    https://github.com/magicmonty/hltvdownloader
+    https://github.com/renne/HLTVDLM
+
+"""
+
+import configparser
+import os
 import re
 import time
-import os
-import configparser
 from pathlib import Path
+from urllib.parse import urlparse
+
+import requests
 
 config = configparser.ConfigParser()
 
@@ -23,14 +31,25 @@ outputpath = config['DEFAULT']['outputpath']
 username = config['DEFAULT']['username']
 password = config['DEFAULT']['password']
 
-APIuriPrefix = 'https://www.homeloadtv.com/api/'
-limit = 100
+API_URI_PREFIX = 'https://www.homeloadtv.com/api/'
+LIMIT = 100
 headers = {
     'User-Agent': 'HLTVDLM 1.0 https://github.com/renneb/HLTVDLM'
 }
 
 
-def setstate(state, id=0, listid=0, filesize=0, speed=0.0, error="", filename=""):
+def setstate(state, id=0, listid=0, filesize=0, speed=0.0, error="", filename=""):  # pylint: disable=too-many-arguments
+    """
+    Set's state of download
+    :param state:
+    :param id:
+    :param listid:
+    :param filesize:
+    :param speed:
+    :param error:
+    :param filename:
+    :return:
+    """
     parameter = None
     if state == "processing":
         parameter = {
@@ -62,20 +81,20 @@ def setstate(state, id=0, listid=0, filesize=0, speed=0.0, error="", filename=""
         }
     else:
         return None
-    return requests.get(APIuriPrefix, params=parameter, headers=headers)
+    return requests.get(API_URI_PREFIX, params=parameter, headers=headers)
 
 
-response = requests.get(APIuriPrefix, headers=headers, params={
+response = requests.get(API_URI_PREFIX, headers=headers, params={
     'do': 'getlinks',
     'uid': username,
     'password': password,
-    'limit': limit,
+    'limit': LIMIT,
     'protocnew': False,
     'onlyhh': False
 })
 
 if response.status_code != 200:
-    print("Error on getting data: " + response.status_code + " " + response.text)
+    print("Error on getting data: " + str(response.status_code) + " " + response.text)
 else:
     i = 0
     for line in response.iter_lines():
@@ -91,7 +110,7 @@ else:
                 linkcount = int(int(m.group(4)))
                 hhstart = int(m.group(5))
                 hhend = int(m.group(6))
-            except Exception as e:
+            except Exception as e:  # pylint: disable=broad-except
                 print("Error parsing data: " + str(e) + ". " + line)
 
             if linkcount > 0:
@@ -103,7 +122,7 @@ else:
                 m = re.search("(.*);(.*);", line)
                 linkurl = m.group(1)
                 linkid = int(m.group(2))
-            except Exception as e:
+            except Exception as e:  # pylint: disable=broad-except
                 print("Error parsing url: " + str(e))
             if linkurl is not None:
                 print("Downloading " + linkurl)
